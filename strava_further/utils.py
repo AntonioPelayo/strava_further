@@ -4,7 +4,9 @@ def seconds_to_hhmmss(seconds):
     return str(dt.utcfromtimestamp(seconds).strftime('%H:%M:%S'))
 
 def meters_per_second_to_min_per_mile(mps):
-    return round(60 / meters_to_miles(mps), 5)
+    meters_per_minute = mps * 60
+    miles_per_minute = meters_to_miles(meters_per_minute)
+    return round(1 / miles_per_minute, 5)
 
 def meters_to_miles(meters):
     return round(meters * 0.000621371, 5)

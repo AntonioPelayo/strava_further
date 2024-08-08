@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Strava Further Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
+<body>
+    <h1>Strava Further Dashboard</h1>
+    <div id="params">
+        <form method="POST">
+            <input type="radio" id="run_rb" name="activity_type" value="Run" {{ 'checked' if selected_activity == 'Run' else '' }}>
+            <label for="run_rb">Run</label>
+
+            <input type="radio" id="bike_ride_rb" name="activity_type" value="Ride" {{ 'checked' if selected_activity == 'Ride' else '' }}>
+            <label for="bike_ride_rb">Bike ride</label>
+
+            <input type="radio" id="all_activities_rb" name="activity_type" value="All" {{ 'checked' if selected_activity == 'All' else ''}}>
+            <label for="all_activities_rb">All activities</label>
+            <br>
+
+            <label for="activity_count">Number of Activities:</label>
+            <select id="activity_count" name="quantity">
+                <option value="25" {{ 'selected' if quantity == '25' else '' }}>25</option>
+                <option value="50" {{ 'selected' if quantity == '50' else '' }}>50</option>
+                <option value="100" {{ 'selected' if quantity == '100' else '' }}>100</option>
+                <option value="All" {{ 'selected' if quantity == 'All' else '' }}>All</option>
+            </select>
+
+            <br>
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+    <div id="graph"></div>
+    <div id="activity_table">
+        {% if tables %}
+            {% for table in tables %}
+                {{ table | safe }}
+            {% endfor %}
+        {% endif %}
+    </div>
+    <script>
+        var graphs = {{ graphJSON | safe }};
+        var graph = document.getElementById('graph');
+        graph.style.height = '1000px';
+        Plotly.newPlot('graph', graphs.data, graphs.layout);
+    </script>
+</body>
+</html>

@@ -3,12 +3,22 @@ import datetime as dt
 import utils
 
 def metric_to_imperial(activity):
-    activity['average_speed'] = utils.meters_per_second_to_min_per_mile(activity['average_speed'])
-    activity['max_speed'] = utils.meters_per_second_to_min_per_mile(activity['max_speed'])
+    if activity['distance'] > 0 and activity['average_speed'] > 0 and activity['max_speed'] > 0:
+        activity['average_speed'] = utils.meters_per_second_to_min_per_mile(activity['average_speed'])
+        activity['max_speed'] = utils.meters_per_second_to_min_per_mile(activity['max_speed'])
+    else:
+        activity['average_speed'] = 0
+        activity['max_speed'] = 0
     activity['distance'] = utils.meters_to_miles(activity['distance'])
-    activity['elev_high'] = utils.meters_to_feet(activity['elev_high'])
-    activity['elev_low'] = utils.meters_to_feet(activity['elev_low'])
-    activity['total_elevation_gain'] = utils.meters_to_feet(activity['total_elevation_gain'])
+
+    if 'elev_high' in activity.keys():
+        activity['elev_high'] = utils.meters_to_feet(activity['elev_high'])
+        activity['elev_low'] = utils.meters_to_feet(activity['elev_low'])
+        activity['total_elevation_gain'] = utils.meters_to_feet(activity['total_elevation_gain'])
+    else:
+        activity['elev_high'] = 0
+        activity['elev_low'] = 0
+        activity['total_elevation_gain'] = 0
 
     return activity
 
